@@ -63,7 +63,11 @@ function cleanHTML(html) {
   
 
   // Wrap in scoped container
-  return `<div id="${SCOPE_ID}">\n${html.trim()}\n</div>`;
+  const configContent = readFileSync(join(ROOT, 'template.config.json'), 'utf-8');
+  const templateConfig = JSON.parse(configContent);
+  const alpineCdn = `<script defer src="${templateConfig.alpineCdnUrl}"></script>`;
+
+  return `<div id="${SCOPE_ID}">\n${html.trim()}\n</div>\n\n<!-- Inyección de Alpine.js para WordPress -->\n${alpineCdn}`;
 }
 
 // ===================================================================
