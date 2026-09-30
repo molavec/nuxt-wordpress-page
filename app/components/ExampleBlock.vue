@@ -3,7 +3,7 @@
     <h1 class="tw-text-4xl tw-font-black tw-font-heading tw-text-primary tw-mb-4">
       WordPress Template Ready!
     </h1>
-    <p class="tw-text-textDark tw-mb-8 tw-text-lg">
+    <p class="tw-text-content tw-mb-8 tw-text-lg">
       Build your landing page with Nuxt and export it as an ultra-lightweight HTML block using our centralized design system.
     </p>
     

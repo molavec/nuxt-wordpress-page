@@ -25,13 +25,13 @@ export default defineNuxtConfig({
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Palanquin:wght@400;700&family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@400;700;900&display=swap' }
+        { rel: 'stylesheet', href: templateConfig.googleFontsUrl }
       ],
       script: [
         { src: templateConfig.alpineCdnUrl, defer: true }
       ],
       bodyAttrs: {
-        class: 'tw-font-body tw-text-textDark tw-bg-white'
+        class: 'tw-font-body tw-text-content tw-bg-white'
       }
     }
   }

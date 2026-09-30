@@ -254,7 +254,9 @@ function scopeCSS(css, scope) {
 }
 
 function buildCSS(rawCSS) {
-  const fontsImport = `@import url('https://fonts.googleapis.com/css2?family=Palanquin:wght@400;700&family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@400;700;900&display=swap');\n\n`;
+  const configContent = readFileSync(join(ROOT, 'template.config.json'), 'utf-8');
+  const templateConfig = JSON.parse(configContent);
+  const fontsImport = `@import url('${templateConfig.googleFontsUrl}');\n\n`;
 
   const scopedCSS = rawCSS; // Tailwind handles scoping via important
 

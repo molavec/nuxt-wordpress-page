@@ -1,3 +1,17 @@
 {
-  "alpineCdnUrl": "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+  "alpineCdnUrl": "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js",
+  "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Palanquin:wght@400;700&family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@400;700;900&display=swap",
+  "theme": {
+    "colors": {
+      "primary": "#F39200",
+      "secondary": "#4D68B0",
+      "accent": "#6BABDC",
+      "content": "#353535"
+    },
+    "fonts": {
+      "heading": ["Roboto", "sans-serif"],
+      "body": ["\"Red Hat Text\"", "sans-serif"],
+      "cta": ["Palanquin", "sans-serif"]
+    }
+  }
 }

@@ -1,3 +1,11 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const templateConfig = JSON.parse(readFileSync(join(__dirname, 'template.config.json'), 'utf-8'));
+
 /** @type {import('tailwindcss').Config} */
 export default {
   important: '#wp-landing-wrapper',
@@ -12,17 +20,8 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: '#F39200',
-        secondary: '#4D68B0',
-        accent: '#6BABDC',
-        textDark: '#353535',
-      },
-      fontFamily: {
-        heading: ['Roboto', 'sans-serif'],
-        body: ['"Red Hat Text"', 'sans-serif'],
-        cta: ['Palanquin', 'sans-serif'],
-      }
+      colors: templateConfig.theme.colors,
+      fontFamily: templateConfig.theme.fonts
     }
   },
   plugins: [],
