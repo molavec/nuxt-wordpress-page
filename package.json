@@ -5,10 +5,9 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "generate": "nuxt generate && node scripts/build-wordpress.mjs",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "export-wp": "node scripts/build-wordpress.mjs"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "nuxt": "^4.5.2",

@@ -1,15 +1,16 @@
-# Nuxt WP Landing Template
+# Nuxt WordPress Landing Template
 
-An optimized starter template for building static **Landing Pages** using Nuxt 3, Tailwind CSS, and Alpine.js, designed to be injected directly into WordPress pages or blocks without causing conflicts.
+**Build WordPress Landing Pages using Nuxt.**
 
-Lightweight and performance are the primary goals of this project. Therefore, we remove the full Vue reactivity in the final export and delegate light interactivity to Alpine.js.
+Starter template in Nuxt for building static HTML Landing Pages seamlessly injected into WordPress pages or blocks without style compatibility issues.
 
-## 🚀 Features
+Lightweight and performance are the primary goals of this project. To achieve this, we rely on a specific tech stack:
 
-* **Zero Vue Reactivity in Production**: All Vue JavaScript is stripped out during the export process to save hundreds of kilobytes and ensure ultra-fast loading.
-* **Interactivity with Alpine.js**: Modals, menus, accordions, and other interactive elements are handled directly in HTML using Alpine attributes (`x-data`, `x-show`, etc.).
-* **Isolated Tailwind CSS**: All utility classes are strictly prefixed with `tw-` (e.g., `tw-flex`, `tw-hidden`). This prevents your styles from clashing with the WordPress theme or installed plugins.
-* **Clean Export**: A custom script handles extracting the final HTML and the purged, isolated CSS into a ready-to-copy folder.
+* **Nuxt 3:** Provides a world-class developer experience with component auto-imports and powerful static generation (SSG) to build the HTML scaffolding rapidly.
+* **Tailwind CSS:** Allows rapid, utility-first styling. It is configured with a strict `tw-` prefix to guarantee zero CSS conflicts with your existing WordPress theme and simply branding in `tailwind.config.js`.
+* **Alpine.js:** Replaces Vue's heavy reactivity in the final output. It delivers just enough JavaScript for UI interactions directly in the HTML while keeping the bundle size microscopic.
+* **'landing' skill:** (Optional) If you use AI assistants, make sure to provide them with the rules from the `.agents/skills/wp-landing` folder to maintain consistency.
+
 
 ## 🛠️ Strict Development Rules
 
@@ -17,38 +18,121 @@ Lightweight and performance are the primary goals of this project. Therefore, we
 2. **Avoid syntax conflicts**: Use Alpine's long syntax (`x-on:click`, `x-bind:class`) to prevent the Vue compiler from attempting to interpret unknown directives.
 3. **Complex Alpine blocks**: If a block contains too much Alpine.js logic and clashes with Vue during development, wrap it in a `<div v-pre>` to tell Vue to skip its rendering.
 4. **Mandatory prefix**: Don't forget to add `tw-` to every Tailwind class (e.g., `hover:tw-bg-red-500`, `md:tw-w-1/2`). If you omit the prefix, the class will not exist.
+5. 
 
-## 📦 Installation and Usage
+## Why is this useful?
 
-Make sure to use [pnpm](https://pnpm.io/) for dependency management.
+Building landing pages directly inside a CMS can be slow and limited by the theme's existing styles and scripts. This template allows you to enjoy a modern, lightning-fast developer experience (Nuxt 3 + Tailwind) and then export an ultra-lightweight, conflict-free static block that drops perfectly into any WordPress site.
+
+## How to use
+
+Develop your pages exactly as you normally would in a standard Nuxt project destined for Static Site Generation (SSG).
+
+Simply run 
 
 ```bash
-# 1. Install dependencies
-pnpm install
-
-# 2. Start the local development server
 pnpm dev
-```
+``` 
 
-## 🏗️ Export Workflow to WordPress
+**Important note:**
+If you are developing this template using AI agents, you can leverage the included **'landing' skill**. This skill explicitly instructs the agent to avoid Vue's reactivity system entirely and delegate all logic and interactive scripts to Alpine.js, ensuring your output remains compliant with the template's rules.
 
-Once you've finished your landing page and want to port it to WordPress:
+## Deploy
 
-```bash
-# 1. Generate the static HTML with Nuxt
+To inject your finished landing page into WordPress, follow these two steps:
+
+### 1. Generate and Extract
+
+Run 
+
+``` bash
 pnpm run generate
-
-# 2. Build, purge, and prepare for WordPress
-node scripts/build-wordpress.mjs
 ```
 
-Upon completion, the ready-to-use files will be located inside the `/wordpress` folder. Simply copy the HTML and add it to your WordPress site, ensuring you include the generated stylesheet.
+This tells Nuxt to build the static output of your application and run `node scripts/build-wordpress.mjs`. 
 
-## Alpine.js Documentation
+This custom script extracts the essential HTML and isolated CSS into a `/wordpress` folder, stripping away all the heavy Vue JavaScript to guarantee a lightweight footprint.
 
-**Current Implementation Note:**
-Currently, the project is configured to load Alpine.js via a **centralized CDN**. The CDN URL is globally defined as a Single Source of Truth in the `template.config.json` file. This ensures that both the development environment (Nuxt) and the final exporter (`build-wordpress.mjs`) use the exact same version without bloating the local files. If you wish to explore other installation methods, refer to the following documents.
+### 2. Inject into WordPress
 
-* [Alpine with pnpm Explanation](docs/alpine-pnpm-explanation.md)
-* [Alpine with CDN Explanation](docs/alpine-cdn-explanation.md)
+### In WordPress Gutenberg Editor 
+
+1. Upload the provided [`only-content.php`](./docs/only-content.php) file to the root of your active WordPress theme and .
+1. select **Only Content** Template in Page Options.
+1. Copy the HTML, CSS and Script from the `/wordpress` folder into your WordPress site using **HTML Custom block**
+
+
+### In Elementor editor 
+1. Go to the page settings and change the Page Layout to [**Elementor Canvas**](https://elementor.com/help/page-settings/).
+1. Copy the HTML, CSS and Script from the `/wordpress` folder into your WordPress site using **HTML Custom Widget**
+
+## Customize
+
+* **`tailwind.config.js`**: Here you define your project's design system (colors, fonts, spacing). It is crucial that the `prefix: 'tw-'` configuration remains intact so that your generated utility classes never conflict with existing WordPress stylesheets.
+
+```javascript
+/** @type {import('tailwindcss').Config} */
+export default {
+  important: '#wp-landing-wrapper',
+  prefix: 'tw-',
+  content: [
+    "./app/components/**/*.{js,vue,ts}",
+    "./app/layouts/**/*.vue",
+    "./app/pages/**/*.vue",
+    "./app/plugins/**/*.{js,ts}",
+    "./app/app.vue",
+    "./app/error.vue",
+  ],
+    extend: {}
+  },
+  plugins: [],
+}
+```
+
+* **`nuxt.config.ts`**: Handles the core framework configuration. This is where the Tailwind module is registered and where the Alpine.js CDN is globally injected into the `<head>` of your document (reading dynamically from `template.config.json`).
+
+```typescript
+export default defineNuxtConfig({
+  ...
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      title: 'Nuxt WP Landing Template',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'description', content: 'Optimized starter template for building static Landing Pages with Nuxt, Tailwind CSS, and Alpine.js to inject into WordPress.' },
+        { name: 'keywords', content: 'Nuxt, WordPress, Landing Page, Tailwind CSS, Alpine.js, Template' },
+        { property: 'og:title', content: 'Nuxt WP Landing Template' },
+        { property: 'og:description', content: 'Optimized starter template for building static Landing Pages to inject into WordPress.' },
+        { property: 'og:type', content: 'website' }
+      ],
+      bodyAttrs: {
+        class: 'tw-font-sans tw-text-gray-900 tw-bg-white'
+      }
+    }
+  }
+})
+```
+
+## Alpinejs 
+
+### Why
+
+While Nuxt and Vue provide an amazing developer experience for building components, their client-side hydration and virtual DOM add a significant JavaScript payload (often hundreds of kilobytes). For static Landing Pages injected into WordPress, this weight is unnecessary. We strip out Vue entirely during the build process and use **Alpine.js** instead. Alpine gives you the same declarative, component-based reactivity directly in your HTML at a fraction of the cost, keeping your final WordPress block ultra-lightweight and lightning-fast.
+
+Currently, the project is configured to load Alpine.js via a **centralized CDN**. 
+
 * [Alpine Comparison: npm vs CDN](docs/alpine-npm-vs-cdn-comparison.md)
+
+
+### CDN 
+
+The CDN URL is globally defined as a Single Source of Truth in the `template.config.json` file. This ensures that both the development environment (Nuxt) and the final exporter (`build-wordpress.mjs`) use the exact same version without bloating the local files. 
+If you wish to explore other installation methods, refer to the following documents.
+* [Alpine with CDN Explanation](docs/alpine-cdn-explanation.md)
+
+### NPM package 
+Not implemented in this project, but you can follow this instructions to implement  it
+* [Alpine with pnpm Explanation](docs/alpine-pnpm-explanation.md)
