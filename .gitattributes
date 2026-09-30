@@ -1,0 +1,47 @@
+# Ensure Linux line endings for bash scripts and important files
+* text=auto eol=lf
+
+# Scripts & Code
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.vue text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.sh text eol=lf
+
+# Styles
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+
+# Markup & Templates
+*.html text eol=lf
+*.md text eol=lf
+
+# Configs & Data
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+
+# SVG is text
+*.svg text eol=lf
+
+# Images (Binary)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.avif binary
+
+# Fonts (Binary)
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.eot binary

@@ -1,0 +1,30 @@
+# Nuxt dev/build outputs
+.nuxt
+.output
+.data
+dist
+.vercel
+.netlify
+
+# Node dependencies
+node_modules
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+yarn.lock
+
+# WordPress export folder
+wordpress
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
