@@ -22,11 +22,16 @@ export default defineNuxtConfig({
         { property: 'og:description', content: 'Optimized starter template for building static Landing Pages to inject into WordPress.' },
         { property: 'og:type', content: 'website' }
       ],
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Palanquin:wght@400;700&family=Red+Hat+Text:wght@400;600;700&family=Roboto:wght@400;700;900&display=swap' }
+      ],
       script: [
         { src: templateConfig.alpineCdnUrl, defer: true }
       ],
       bodyAttrs: {
-        class: 'tw-font-sans tw-text-gray-900 tw-bg-white'
+        class: 'tw-font-body tw-text-textDark tw-bg-white'
       }
     }
   }

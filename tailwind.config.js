@@ -11,7 +11,19 @@ export default {
     "./app/error.vue",
   ],
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        primary: '#F39200',
+        secondary: '#4D68B0',
+        accent: '#6BABDC',
+        textDark: '#353535',
+      },
+      fontFamily: {
+        heading: ['Roboto', 'sans-serif'],
+        body: ['"Red Hat Text"', 'sans-serif'],
+        cta: ['Palanquin', 'sans-serif'],
+      }
+    }
   },
   plugins: [],
 }
