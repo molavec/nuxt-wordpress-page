@@ -7,9 +7,9 @@ Starter template in Nuxt for building static HTML Landing Pages seamlessly injec
 Lightweight and performance are the primary goals of this project. To achieve this, we rely on a specific tech stack:
 
 * **Nuxt 3:** Provides a world-class developer experience with component auto-imports and powerful static generation (SSG) to build the HTML scaffolding rapidly.
-* **Tailwind CSS:** Allows rapid, utility-first styling. It is configured with a strict `tw-` prefix to guarantee zero CSS conflicts with your existing WordPress theme and simply branding in `tailwind.config.js`.
+* **Tailwind CSS:** Allows rapid, utility-first styling. It is configured with a strict `nwp-` prefix to guarantee zero CSS conflicts with your existing WordPress theme and simply branding in `tailwind.config.js`.
 * **Alpine.js:** Replaces Vue's heavy reactivity in the final output. It delivers just enough JavaScript for UI interactions directly in the HTML while keeping the bundle size microscopic.
-* **'landing' skill:** (Optional) If you use AI assistants, make sure to provide them with the rules from the `.agents/skills/wp-landing` folder to maintain consistency.
+* **AI Agents Context:** The project includes an `AGENTS.md` file at the root. If you use AI assistants, this file provides global rules to maintain consistency and prevent the use of unsupported features.
 
 
 ## How to use
@@ -31,7 +31,7 @@ Simply run
 pnpm dev
 ``` 
 
-3. If you are developing this template using AI agents, you can leverage the included **'landing' skill**. This skill explicitly instructs the agent to avoid Vue's reactivity system entirely and delegate all logic and interactive scripts to Alpine.js, ensuring your output remains compliant with the template's rules.
+3. If you are developing this template using AI agents, the included **`AGENTS.md`** file provides the necessary context automatically. It explicitly instructs agents to avoid Vue's reactivity system entirely, enforce Tailwind prefixes, and delegate all logic to Alpine.js, ensuring output remains compliant with the template's rules.
 
 ## Deploy
 
@@ -87,7 +87,7 @@ We use a **Single Source of Truth** for all branding and external dependencies. 
 ```
 
 The rest of the configuration files are wired to read directly from this JSON:
-* **`tailwind.config.js`**: Automatically maps the `theme.colors` and `theme.fonts` properties to your Tailwind utility classes. It is crucial that the `prefix: 'tw-'` configuration remains intact so that your generated classes never conflict with existing WordPress stylesheets.
+* **`tailwind.config.js`**: Automatically maps the `theme.colors` and `theme.fonts` properties to your Tailwind utility classes. It is crucial that the `prefix: 'nwp-'` configuration remains intact so that your generated classes never conflict with existing WordPress stylesheets.
 * **`nuxt.config.ts`**: Dynamically injects `googleFontsUrl` and `alpineCdnUrl` into the `<head>` of your document during local development.
 * **`scripts/build-wordpress.mjs`**: Reads the same properties to inject them into the final static output (`main.css` and `index.html`) during the WordPress export process, ensuring 100% consistency.
 

@@ -144,7 +144,7 @@ function prefixSelectors(selectorStr, scope) {
 }
 
 /**
- * Prefix CSS class selectors with 'tw-' to avoid conflicts.
+ * Prefix CSS class selectors with 'nwp-' to avoid conflicts.
  */
 function prefixSelectorClasses(selector) {
   // Split by [ ... ] to avoid replacing inside attribute selectors
@@ -152,7 +152,7 @@ function prefixSelectorClasses(selector) {
   for (let i = 0; i < parts.length; i++) {
     if (i % 2 === 0) { // Only process outside brackets
       const regex = /\.((?:\\[\s\S]|[a-zA-Z_-][a-zA-Z0-9_-]*)+)/g;
-      parts[i] = parts[i].replace(regex, (match, className) => '.tw-' + className);
+      parts[i] = parts[i].replace(regex, (match, className) => '.nwp-' + className);
     }
   }
   return parts.join('');

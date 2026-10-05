@@ -9,7 +9,7 @@ const templateConfig = JSON.parse(readFileSync(join(__dirname, 'template.config.
 /** @type {import('tailwindcss').Config} */
 export default {
   important: '#wp-landing-wrapper',
-  prefix: 'tw-',
+  prefix: 'nwp-',
   content: [
     "./app/components/**/*.{js,vue,ts}",
     "./app/layouts/**/*.vue",

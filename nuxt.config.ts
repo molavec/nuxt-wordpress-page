@@ -29,10 +29,7 @@ export default defineNuxtConfig({
       ],
       script: [
         { src: templateConfig.alpineCdnUrl, defer: true }
-      ],
-      bodyAttrs: {
-        class: 'tw-font-body tw-text-content tw-bg-white'
-      }
+      ]
     }
   }
 })
