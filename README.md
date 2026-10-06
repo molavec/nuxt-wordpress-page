@@ -39,15 +39,25 @@ To inject your finished landing page into WordPress, follow these two steps:
 
 ### 1. Generate and Extract
 
-Run 
+To export the main page (index), simply run:
 
-``` bash
+```bash
 pnpm run generate
 ```
 
 This tells Nuxt to build the static output of your application and run `node scripts/build-wordpress.mjs`. 
 
 This custom script extracts the essential HTML and isolated CSS into a `/wordpress` folder, stripping away all the heavy Vue JavaScript to guarantee a lightweight footprint.
+
+#### Exporting a Specific Component or Page
+
+If you created a new page (e.g. `app/pages/program.vue`) and only want to export that specific section, you can pass the route name as an argument to the generate command:
+
+```bash
+pnpm generate program
+```
+
+This will build the static output and export the isolated HTML and CSS into the `/wordpress/program/` directory.
 
 ### 2. Inject into WordPress
 

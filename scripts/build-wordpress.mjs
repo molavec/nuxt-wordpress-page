@@ -16,7 +16,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const OUTPUT_DIR = join(ROOT, '.output', 'public');
 const NUXT_DIR = join(OUTPUT_DIR, '_nuxt');
-const WP_DIR = join(ROOT, 'wordpress');
+const ROUTE = process.argv[2] || 'index';
+const WP_DIR = ROUTE === 'index' ? join(ROOT, 'wordpress') : join(ROOT, 'wordpress', ROUTE);
 const SCOPE_ID = 'wp-landing-wrapper';
 const SCOPE = `#${SCOPE_ID}`;
 
@@ -25,7 +26,8 @@ const SCOPE = `#${SCOPE_ID}`;
 // ===================================================================
 
 function extractHTML() {
-  const html = readFileSync(join(OUTPUT_DIR, 'index.html'), 'utf-8');
+  const htmlPath = ROUTE === 'index' ? join(OUTPUT_DIR, 'index.html') : join(OUTPUT_DIR, ROUTE, 'index.html');
+  const html = readFileSync(htmlPath, 'utf-8');
 
   // Extract <main>...</main> content (rendered by index.vue)
   const mainMatch = html.match(/<main>([\s\S]*)<\/main>/);
@@ -268,7 +270,8 @@ function buildCSS(rawCSS) {
 // ===================================================================
 
 function main() {
-  console.log('📦 Building WordPress export…\n');
+  const targetName = ROUTE === 'index' ? 'wordpress' : `wordpress/${ROUTE}`;
+  console.log(`📦 Building WordPress export for '${ROUTE}'…\n`);
 
   mkdirSync(WP_DIR, { recursive: true });
 
@@ -276,15 +279,21 @@ function main() {
   console.log('  📄 Extracting HTML…');
   const rawHTML = extractHTML();
   const cleanedHTML = cleanHTML(rawHTML);
+  const minifiedHTML = cleanedHTML.replace(/>\s+</g, '><').replace(/<!--[\s\S]*?-->/g, '').trim();
   writeFileSync(join(WP_DIR, 'index.html'), cleanedHTML, 'utf-8');
-  console.log('     ✅ wordpress/index.html');
+  writeFileSync(join(WP_DIR, 'index.min.html'), minifiedHTML, 'utf-8');
+  console.log(`     ✅ ${targetName}/index.html`);
+  console.log(`     ✅ ${targetName}/index.min.html`);
 
   // 2. CSS
   console.log('  🎨 Processing & scoping CSS…');
   const rawCSS = collectCSS();
   const finalCSS = buildCSS(rawCSS);
+  const minifiedCSS = finalCSS.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{}:;,>~])\s*/g, '$1').trim();
   writeFileSync(join(WP_DIR, 'main.css'), finalCSS, 'utf-8');
-  console.log('     ✅ wordpress/main.css');
+  writeFileSync(join(WP_DIR, 'main.min.css'), minifiedCSS, 'utf-8');
+  console.log(`     ✅ ${targetName}/main.css`);
+  console.log(`     ✅ ${targetName}/main.min.css`);
 
   // 3. JS
   console.log('  ⚡ Generating JS wrapper…');
@@ -292,17 +301,20 @@ function main() {
   // Alpine.js handles the interactivity natively
 });
 `;
+  const minifiedJS = js.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '').replace(/\s+/g, ' ').trim();
   writeFileSync(join(WP_DIR, 'script.js'), js, 'utf-8');
-  console.log('     ✅ wordpress/script.js');
+  writeFileSync(join(WP_DIR, 'script.min.js'), minifiedJS, 'utf-8');
+  console.log(`     ✅ ${targetName}/script.js`);
+  console.log(`     ✅ ${targetName}/script.min.js`);
 
   // Summary
-  const htmlBytes = Buffer.byteLength(cleanedHTML);
-  const cssBytes = Buffer.byteLength(finalCSS);
-  const jsBytes = Buffer.byteLength(js);
+  const htmlBytes = Buffer.byteLength(minifiedHTML);
+  const cssBytes = Buffer.byteLength(minifiedCSS);
+  const jsBytes = Buffer.byteLength(minifiedJS);
   const totalBytes = htmlBytes + cssBytes + jsBytes;
   const vueJSBytes = 512381; // sum of all .js files in _nuxt
 
-  console.log('\n📊 Output summary:');
+  console.log('\n📊 Output summary (minified):');
   console.log(`   HTML:  ${(htmlBytes / 1024).toFixed(1)} KB`);
   console.log(`   CSS:   ${(cssBytes / 1024).toFixed(1)} KB`);
   console.log(`   JS:    ${(jsBytes / 1024).toFixed(1)} KB`);
@@ -310,7 +322,7 @@ function main() {
   console.log(
     `\n   JS reduction: ${(jsBytes / 1024).toFixed(1)} KB vs ${(vueJSBytes / 1024).toFixed(0)} KB Vue/Nuxt (${((1 - jsBytes / vueJSBytes) * 100).toFixed(0)}% smaller)`
   );
-  console.log('\n✨ Files ready in wordpress/ directory');
+  console.log(`\n✨ Files ready in ${targetName}/ directory`);
 }
 
 main();
